@@ -1,0 +1,27 @@
+{
+  "name": "taskmanager",
+  "version": "1.0.0",
+  "description": "A task manager app, using a db and authentication - all written in nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/PIYatGitHub/NodeJS-taskManager.git"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "css",
+    "html",
+    "api",
+    "mongo"
+  ],
+  "author": "Peter Iv. Yonkov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PIYatGitHub/NodeJS-taskManager/issues"
+  },
+  "homepage": "https://github.com/PIYatGitHub/NodeJS-taskManager#readme"
+}
