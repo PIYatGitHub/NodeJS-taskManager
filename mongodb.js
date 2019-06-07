@@ -12,5 +12,6 @@ MongoClient.connect(connectionUrl,{useNewUrlParser:true}, (error, client)=>{
     if (err) return console.log('unable to get the user you wanted...');
     console.log(res);
   });
-
+  db.collection('users').updateOne({username:'PIY'},{$set:{name:'Ui Spleskan'}}).
+    then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
 });
