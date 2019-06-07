@@ -12,8 +12,27 @@ const User = mongoose.model('User',{
       required:true
     }
 });
-const me = new User({
-  name:"Petar Iv. Yonkov",
-  age: 27
+
+const Task = mongoose.model('Task',{
+  description:{
+    type:String,
+    required:true,
+    default:"Untitled task"
+  },
+  complete:{
+    type:Boolean,
+    required:true,
+    default: false
+  }
 });
-me.save().then(()=>console.log('did it go in -- yes!')).catch((err)=>{console.log(err)});
+
+// const me = new User({
+//   name:"Petar Iv. Yonkov",
+//   age: 27
+// });
+// me.save().then(()=>console.log('did it go in -- yes!')).catch((err)=>{console.log(err)});
+
+const task2 = new Task({
+  complete: true
+});
+task2.save().then(()=>console.log('did it go in -- yes!')).catch((err)=>{console.log(err)});
