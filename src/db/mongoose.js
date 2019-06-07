@@ -19,6 +19,15 @@ const User = mongoose.model('User',{
         if(!validator.isEmail(value)) throw new Error('Invalid email...')
       }
     },
+    password:{
+      type:String,
+      trim:true,
+      required:true,
+      validate(value){
+        if(value.length<6) throw new Error('Invalid password. At least 6 characters are required.');
+        if (value.toLowerCase().includes('password')) throw new Error('Blacklisted password that is!');
+      }
+    },
     age:{
       type:Number,
       default:14,
@@ -33,22 +42,22 @@ const Task = mongoose.model('Task',{
   description:{
     type:String,
     required:true,
-    default:"Untitled task"
+    trim:true
   },
   complete:{
     type:Boolean,
-    required:true,
     default: false
   }
 });
 
-const me = new User({
-  name:"  Petar Iv. Yonkov  ",
-  email:'  mWETTergeWETYe@1.com  '
-});
-me.save().then(()=>console.log('did it go in -- yes!')).catch((err)=>{console.log(err)});
-
-// const task2 = new Task({
-//   complete: true
+// const me = new User({
+//   name:"  Petar Iv. Yonkov  ",
+//   email:'  mWETTergeWETYe@1.com  ',
+//   password:'P!#%AwhrS%!@ethSWOyiLRjrtD'
 // });
-// task2.save().then(()=>console.log('did it go in -- yes!')).catch((err)=>{console.log(err)});
+// me.save().then(()=>console.log('did it go in -- yes!')).catch((err)=>{console.log(err)});
+
+const task = new Task({
+  complete: true
+});
+task.save().then(()=>console.log('did it go in -- yes!')).catch((err)=>{console.log(err)});
