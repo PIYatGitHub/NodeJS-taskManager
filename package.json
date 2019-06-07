@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/PIYatGitHub/NodeJS-taskManager#readme",
   "dependencies": {
+    "i": "^0.3.6",
     "mongodb": "^3.2.7",
-    "mongoose": "^5.5.13"
+    "mongoose": "^5.5.13",
+    "validator": "^11.0.0"
   }
 }
