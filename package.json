@@ -4,7 +4,8 @@
   "description": "A task manager app, using a db and authentication - all written in nodejs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start":  "node src/index.js",
+    "dev":    "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
