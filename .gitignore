@@ -1,5 +1,5 @@
 node_modules
 exp
-../utils/config
+src/utils/config.js
 .idea
 passwords.txt
