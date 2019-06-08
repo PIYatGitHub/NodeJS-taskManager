@@ -1,5 +1,5 @@
 const express = require('express'),
-      middleware = require('../middleware'),
+      middleware = require('../utils/middleware'),
       User = require('../models/user'),
       router = new express.Router();
 
