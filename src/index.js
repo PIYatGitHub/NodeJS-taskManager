@@ -60,7 +60,7 @@ app.delete('/users/:id', async (req, res)=>{
     if(!user) return res.status(404).send();
     res.send(user)
   }catch (e) {
-    res.status(400).send(e)
+    res.status(500).send(e)
   }
 });
 
@@ -100,11 +100,21 @@ app.patch('/tasks/:id', async (req, res)=>{
   }
 
   try{
-    const task = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators:true});
+    const task = await Task.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators:true});
     if(!task) return res.status(404).send();
     res.send(task)
   }catch (e) {
     res.status(400).send(e)
+  }
+});
+
+app.delete('/tasks/:id', async (req, res)=>{
+  try{
+    const task = await Task.findByIdAndDelete(req.params.id);
+    if(!task) return res.status(404).send();
+    res.send(task)
+  }catch (e) {
+    res.status(500).send(e)
   }
 });
 
