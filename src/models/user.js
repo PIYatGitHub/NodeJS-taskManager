@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
     trim:true,
     lowercase:true,
     required:true,
+    unique: true,
     validate(value){
       if(!validator.isEmail(value)) throw new Error('Invalid email...')
     }
@@ -33,6 +34,14 @@ const userSchema = new mongoose.Schema({
     max:130
   }
 });
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({email});
+  const isMatch = await bcrypt.compare(password,user.password);
+  if (!user)    throw new Error('Unable to log in!');
+  if (!isMatch) throw new Error('Unable to log in!');
+  return user;
+};
+
 userSchema.pre('save', async function (next) {
   const user = this;
   if (user.isModified('password')) user.password = await bcrypt.hash(user.password,8);
