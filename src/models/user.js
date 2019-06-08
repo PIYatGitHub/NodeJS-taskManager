@@ -1,7 +1,8 @@
 const mongoose = require('mongoose'),
-  validator = require('validator');
+      validator = require('validator'),
+      bcrypt=require('bcryptjs');
 
-const User = mongoose.model('User',{
+const userSchema = new mongoose.Schema({
   name:{
     type:String,
     trim:true,
@@ -27,12 +28,16 @@ const User = mongoose.model('User',{
   },
   age:{
     type:Number,
-    default:14,
-    validate(value){
-      if(value<13) throw new Error('Get back to the analogue world, will you!');
-      if(value>130) throw new Error('You seem too old to have a PC. Enter some realistic age...!');
-    }
+    default:13,
+    min:13,
+    max:130
   }
 });
-
+userSchema.pre('save', async function (next) {
+  const user = this;
+  console.log('in here???');
+  if (user.isModified('password')) user.password = await bcrypt.hash(user.password,8);
+  next();
+});
+const User = mongoose.model('User',userSchema);
 module.exports = User;
