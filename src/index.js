@@ -1,5 +1,6 @@
 const express = require('express');
 require('./db/mongoose');
+const middleware = require('./middleware');
 
 const app =express(),
       port = process.env.PORT||3000;
@@ -39,11 +40,11 @@ app.post('/users', async (req, res)=>{
 });
 
 app.patch('/users/:id', async (req, res)=>{
-  const updates = Object.keys(req.body),
-        allowedUpdates = ['name', 'age', 'email', 'password'],
-        isValidUpd = updates.every((update)=>allowedUpdates.includes(update));
-  if (!isValidUpd) return res.status(400).send({error:'Invalid updates!'});
-  
+  const allowedUpdates = ['name', 'age', 'email', 'password'];
+  if (!middleware.validateUpdate(req.body, allowedUpdates)){
+    return res.status(400).send({error:'Invalid updates!'});
+  }
+
   try{
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators:true});
     if(!user) return res.status(404).send();
@@ -77,6 +78,21 @@ app.post('/tasks', async (req, res)=>{
   try{
     await task.save();
     res.status(201).send(task)
+  }catch (e) {
+    res.status(400).send(e)
+  }
+});
+
+app.patch('/tasks/:id', async (req, res)=>{
+  const allowedUpdates = ['description', 'completed'];
+  if (!middleware.validateUpdate(req.body, allowedUpdates)){
+    return res.status(400).send({error:'Invalid updates!'});
+  }
+
+  try{
+    const task = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators:true});
+    if(!task) return res.status(404).send();
+    res.send(task)
   }catch (e) {
     res.status(400).send(e)
   }
