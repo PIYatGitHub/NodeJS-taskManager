@@ -5,7 +5,7 @@ const User = mongoose.model('User',{
   name:{
     type:String,
     trim:true,
-    default: "Anonymous"
+    required:true
   },
   email:{
     type:String,
