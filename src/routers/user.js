@@ -11,7 +11,7 @@ const upload = multer({
   },
   fileFilter(req, file, cb){
     const fileExtension =file.originalname.toLowerCase();
-    if (fileExtension.match(/\.(jpg|png|gif)$/)) return cb(undefined,true);
+    if (fileExtension.match(/\.(jpg|png|jpeg)$/)) return cb(undefined,true);
     cb(new Error('File must be an image!'));
   }
 });
@@ -68,6 +68,8 @@ router.post('/users/logoutAll', middleware.auth, async (req, res)=>{
 
 router.post('/users/me/avatar', middleware.auth,upload.single('profile_image'),async (req, res)=>{
   res.status(201).send();
+},(error, req, res, next)=>{
+  res.status(400).send({error: error.message});
 });
 
 
