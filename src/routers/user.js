@@ -1,7 +1,12 @@
 const express = require('express'),
+      multer = require('multer'),
       middleware = require('../utils/middleware'),
       User = require('../models/user'),
       router = new express.Router();
+
+const upload = multer({
+  dest:'images'
+});
 
 router.get('/users/me',middleware.auth, async (req, res)=>{
   res.send(req.user);
@@ -47,6 +52,11 @@ router.post('/users/logoutAll', middleware.auth, async (req, res)=>{
     res.status(500).send()
   }
 });
+
+router.post('/users/me/avatar', middleware.auth,upload.single('profile_image'),async (req, res)=>{
+  res.status(201).send();
+});
+
 
 router.patch('/users/me', middleware.auth, async (req, res)=>{
   const allowedUpdates = ['name', 'age', 'email', 'password'];
