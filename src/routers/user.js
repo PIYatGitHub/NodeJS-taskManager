@@ -48,6 +48,15 @@ router.post('/users/logout', middleware.auth, async (req, res)=>{
   }
 });
 
+router.post('/users/logoutAll', middleware.auth, async (req, res)=>{
+  try{
+    req.user.tokens = [];
+    await req.user.save();
+    res.send();
+  }catch (e) {
+    res.status(500).send()
+  }
+});
 
 router.patch('/users/:id', async (req, res)=>{
   const allowedUpdates = ['name', 'age', 'email', 'password'];
