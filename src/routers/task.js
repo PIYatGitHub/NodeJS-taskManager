@@ -4,15 +4,21 @@ const express = require('express'),
   router = new express.Router();
 
 router.get('/tasks', middleware.auth, async (req, res)=>{
-  const match = {};
+  const match = {},
+  options=  {
+    limit: parseInt(req.query.limit),
+    skip: parseInt(req.query.skip)
+  };
   if (req.query.complete){
     match.complete = req.query.complete==='true';
   }
 
+
   try {
    await req.user.populate({
      path:'tasks',
-     match
+     match,
+     options
    }).execPopulate();
     res.send(req.user.tasks)
   }catch (e) {
