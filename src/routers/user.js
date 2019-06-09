@@ -8,6 +8,11 @@ const upload = multer({
   dest:'images',
   limits: {
     fileSize: 1000000
+  },
+  fileFilter(req, file, cb){
+    const fileExtension =file.originalname.toLowerCase();
+    if (fileExtension.match(/\.(jpg|png|gif)$/)) return cb(undefined,true);
+    cb(new Error('File must be an image!'));
   }
 });
 
