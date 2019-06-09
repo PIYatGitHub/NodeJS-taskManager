@@ -36,7 +36,6 @@ router.get('/users/:id/avatar', async (req, res)=>{
   }
 });
 
-
 router.post('/users', async (req, res)=>{
   const user = new User(req.body);
   try{
@@ -105,6 +104,7 @@ router.patch('/users/me', middleware.auth, async (req, res)=>{
 router.delete('/users/me', middleware.auth, async (req, res)=>{
   try{
     await req.user.remove();
+    mails.sendCancellationEmail(req.user.email, req.user.name);
     res.send(req.user)
   }catch (e) {
     res.status(500).send(e)
