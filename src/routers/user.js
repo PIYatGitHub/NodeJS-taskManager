@@ -31,12 +31,23 @@ router.post('/users', async (req, res)=>{
 router.post('/users/login', async (req, res)=>{
   try{
     const user = await User.findByCredentials(req.body.email, req.body.password),
-          token = await user.generateAuthToken();
+      token = await user.generateAuthToken();
     res.send({user, token});
   }catch (e) {
     res.status(401).send(e)
   }
 });
+
+router.post('/users/logout', middleware.auth, async (req, res)=>{
+  try{
+    req.user.tokens = req.user.tokens.filter((t)=>t.token!==req.token);
+    await req.user.save();
+    res.send();
+  }catch (e) {
+    res.status(500).send()
+  }
+});
+
 
 router.patch('/users/:id', async (req, res)=>{
   const allowedUpdates = ['name', 'age', 'email', 'password'];
