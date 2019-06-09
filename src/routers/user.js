@@ -5,11 +5,19 @@ const express = require('express'),
       router = new express.Router();
 
 const upload = multer({
-  dest:'images'
+  dest:'images',
+  limits: {
+    fileSize: 1000000
+  }
 });
 
 router.get('/users/me',middleware.auth, async (req, res)=>{
-  res.send(req.user);
+ try {
+   res.send(req.user);
+ }catch (e) {
+   res.status(400).send();
+ }
+
 });
 
 router.post('/users', async (req, res)=>{
