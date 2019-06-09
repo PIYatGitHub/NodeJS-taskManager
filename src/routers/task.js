@@ -4,21 +4,25 @@ const express = require('express'),
   router = new express.Router();
 
 router.get('/tasks', middleware.auth, async (req, res)=>{
-  const match = {},
-  options=  {
-    limit: parseInt(req.query.limit),
-    skip: parseInt(req.query.skip)
-  };
+  const match = {}, sort = {};
   if (req.query.complete){
     match.complete = req.query.complete==='true';
   }
 
+  if (req.query.sortBy) {
+    let parts = req.query.sortBy.split(':');
+    sort[parts[0]] = parts[1]==='desc'? -1 : 1
+  }
 
   try {
    await req.user.populate({
      path:'tasks',
      match,
-     options
+     options: {
+       limit: parseInt(req.query.limit),
+       skip: parseInt(req.query.skip),
+       sort
+     }
    }).execPopulate();
     res.send(req.user.tasks)
   }catch (e) {
