@@ -1,4 +1,5 @@
 node_modules
 src/utils/config.js
 src/utils/dev.env
+config
 .idea
