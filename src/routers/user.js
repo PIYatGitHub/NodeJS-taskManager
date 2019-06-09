@@ -7,16 +7,6 @@ router.get('/users/me',middleware.auth, async (req, res)=>{
   res.send(req.user);
 });
 
-router.get('/users/:id', async (req, res)=>{
-  try {
-    const user = await User.findById({_id:req.params.id});
-    if (!user) return res.status(404).send();
-    res.send(user);
-  }catch (e) {
-    res.status(500).send();
-  }
-});
-
 router.post('/users', async (req, res)=>{
   const user = new User(req.body);
   try{
@@ -58,29 +48,25 @@ router.post('/users/logoutAll', middleware.auth, async (req, res)=>{
   }
 });
 
-router.patch('/users/:id', async (req, res)=>{
+router.patch('/users/me', middleware.auth, async (req, res)=>{
   const allowedUpdates = ['name', 'age', 'email', 'password'];
   if (!middleware.validateUpdate(req.body, allowedUpdates)){
     return res.status(400).send({error:'Invalid updates!'});
   }
 
   try{
-    const user = await User.findById(req.params.id);
-    Object.keys(req.body).forEach((update)=>user[update] = req.body[update]);
-    await user.save();
-
-    if(!user) return res.status(404).send();
-    res.send(user)
+    Object.keys(req.body).forEach((update)=>req.user[update] = req.body[update]);
+    await req.user.save();
+    res.send(req.user);
   }catch (e) {
     res.status(400).send(e)
   }
 });
 
-router.delete('/users/:id', async (req, res)=>{
+router.delete('/users/me', middleware.auth, async (req, res)=>{
   try{
-    const user = await User.findByIdAndDelete(req.params.id);
-    if(!user) return res.status(404).send();
-    res.send(user)
+    await req.user.remove();
+    res.send(req.user)
   }catch (e) {
     res.status(500).send(e)
   }
