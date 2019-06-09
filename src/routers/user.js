@@ -5,7 +5,6 @@ const express = require('express'),
       router = new express.Router();
 
 const upload = multer({
-  dest:'images',
   limits: {
     fileSize: 1000000
   },
@@ -67,11 +66,12 @@ router.post('/users/logoutAll', middleware.auth, async (req, res)=>{
 });
 
 router.post('/users/me/avatar', middleware.auth,upload.single('profile_image'),async (req, res)=>{
+  req.user.avatar = req.file.buffer;
+  await req.user.save();
   res.status(201).send();
 },(error, req, res, next)=>{
   res.status(400).send({error: error.message});
 });
-
 
 router.patch('/users/me', middleware.auth, async (req, res)=>{
   const allowedUpdates = ['name', 'age', 'email', 'password'];
@@ -96,4 +96,15 @@ router.delete('/users/me', middleware.auth, async (req, res)=>{
     res.status(500).send(e)
   }
 });
+
+router.delete('/users/me/avatar', middleware.auth, async (req, res)=>{
+  try{
+    req.user.avatar = undefined;
+    await req.user.save();
+    res.status(200).send();
+  }catch (e) {
+    res.status(500).send(e)
+  }
+});
+
 module.exports = router;
