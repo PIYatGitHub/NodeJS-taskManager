@@ -81,7 +81,7 @@ router.post('/users/logoutAll', middleware.auth, async (req, res)=>{
 router.post('/users/me/avatar', middleware.auth,upload.single('profile_image'),async (req, res)=>{
   req.user.avatar = await sharp(req.file.buffer).resize({width: 250, height: 250}).png().toBuffer();
   await req.user.save();
-  res.status(201).send();
+  res.status(200).send();
 },(error, req, res, next)=>{
   res.status(400).send({error: error.message});
 });

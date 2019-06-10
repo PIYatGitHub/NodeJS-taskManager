@@ -136,5 +136,9 @@ test('Should fail @ deleting the profile without auth', async()=>{
 });
 
 test('Should succeed @ upload avatar image', async()=>{
-
+  await request(app)
+    .post('/users/me/avatar')
+    .set ('Authorization', `Bearer ${testUser_1.tokens[0].token}`)
+    .attach('profile_image', 'tests/fixtures/pass.PNG')
+    .expect(200)
 });
