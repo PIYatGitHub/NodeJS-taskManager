@@ -26,10 +26,27 @@ test('Should signup a new user', async()=>{
       {
         name:"Petar Yonkov",
         email:"10vpetyryonkov@gmail.com",
-        password:"SerbiaStrong",
-        age: 33
+        password:"SerbiaStrong"
       }
     ).expect(201)
+});
+
+test('Should fail @ signup without email', async()=>{
+  await request(app).post('/users').send(
+    {
+      name:"Petar Yonkov",
+      password:"SerbiaStrong"
+    }
+  ).expect(400)
+});
+
+test('Should fail @ signup without password', async()=>{
+  await request(app).post('/users').send(
+    {
+      name:"Petar Yonkov",
+      email:"10vpetyryonkov@gmail.com"
+    }
+  ).expect(400)
 });
 
 test('Should login the existing test user', async()=>{
