@@ -82,7 +82,7 @@ test('Should fail @ signup with a very low age (below 13)', async()=>{
     .expect(400)
 });
 
-test('Should succeed @ login fon an existing test user', async()=>{
+test('Should succeed @ login for an existing test user', async()=>{
  const response = await request(app)
    .post('/users/login')
    .send({
@@ -101,6 +101,27 @@ test('Should fail @ login of the existing test user with bad data', async()=>{
       email: testUser_1.email,
       password:testUser_1.password + 'nfguiqwyh3t78912'
   }).expect(400)
+});
+
+test('Should succeed @ changing the profile with good data', async()=>{
+  await request(app)
+    .patch('/users/me')
+    .set('Authorization', `Bearer ${testUser_1.tokens[0].token}`)
+    .send({
+      name: "Allahu"
+    })
+    .expect(200)
+});
+
+test('Should fail @ changing the profile with bad data', async()=>{
+  await request(app)
+    .patch('/users/me')
+    .set('Authorization', `Bearer ${testUser_1.tokens[0].token}`)
+    .send({
+      name: "Allahu",
+      location: "tora-bora"
+    })
+    .expect(400)
 });
 
 test('Should succeed @ geting the profile with auth', async()=>{
@@ -135,10 +156,20 @@ test('Should fail @ deleting the profile without auth', async()=>{
     .expect(401)
 });
 
-test('Should succeed @ upload avatar image', async()=>{
+test('Should succeed @ upload avatar image for good img', async()=>{
   await request(app)
     .post('/users/me/avatar')
     .set ('Authorization', `Bearer ${testUser_1.tokens[0].token}`)
     .attach('profile_image', 'tests/fixtures/pass.PNG')
-    .expect(200)
+    .expect(200);
+  const user = await User.findById(testUser_1_id);
+  expect(user.avatar).toEqual(expect.any(Buffer));
+});
+
+test('Should fail @ upload avatar image for too large img', async()=>{
+  await request(app)
+    .post('/users/me/avatar')
+    .set ('Authorization', `Bearer ${testUser_1.tokens[0].token}`)
+    .attach('profile_image', 'tests/fixtures/too_large.jpg')
+    .expect(400)
 });
