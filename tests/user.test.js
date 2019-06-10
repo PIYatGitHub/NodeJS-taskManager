@@ -9,5 +9,5 @@ test('Should signup a new user', async()=>{
         password:"SerbiaStrong",
         age: 27
       }
-    )
+    ).expect(201)
 });
