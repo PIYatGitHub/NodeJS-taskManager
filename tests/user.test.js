@@ -22,13 +22,20 @@ beforeEach(async ()=>{
 });
 
 test('Should signup a new user', async()=>{
-    await request(app).post('/users')
-      .send({
-        name: "PIY",
-        email:"10v@test.com",
-        password:"whatever_pass_works!!"
-      })
-      .expect(201)
+  const payload = {
+    name: "PIY",
+    email:"10v@test.com",
+    password:"whatever_pass_works!!"
+  };
+  const response = await request(app).post('/users')
+    .send(payload)
+    .expect(201);
+  //assert that this user exists
+  const user = await User.findById(response.body.user._id);
+  expect(user).not.toBeNull();
+  //assertions about the response
+  expect(response.body.user.name).toBe('PIY');
+  expect(response.body.user.password).not.toBe(payload.password);
 });
 
 test('Should fail @ signup without email', async()=>{
