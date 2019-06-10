@@ -16,6 +16,7 @@ holds some data needed for the app to run in development mode. This file is loca
     <li>JWT_SECRET</li>    
     <li>DB_URL</li>
  </ul>
+ <br/>
 Do not forget not to use any text formatting while you type out your version of the file. <br>
-Also it is <b>very important</b> to have the following command at ``package.json`` since it will fail otherwise: 
-``env-cmd -f ./config/dev.env nodemon src/index.js``. 
+Also it is <b>very important</b> to have the following command at package.json since it will fail otherwise: 
+env-cmd -f ./config/dev.env nodemon src/index.js. 
