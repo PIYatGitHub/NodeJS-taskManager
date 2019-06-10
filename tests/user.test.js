@@ -32,3 +32,10 @@ test('Should login the existing test user', async()=>{
    password:testUser_1.password
  }).expect(200)
 });
+
+test('Should fail @ login of the existing test user with bad data', async()=>{
+  await request(app).post('/users/login').send({
+    email: testUser_1.email,
+    password:testUser_1.password + 'nfguiqwyh3t78912'
+  }).expect(400)
+});

@@ -54,7 +54,7 @@ router.post('/users/login', async (req, res)=>{
       token = await user.generateAuthToken();
     res.send({user, token});
   }catch (e) {
-    res.status(401).send(e)
+    res.status(400).send(e)
   }
 });
 
