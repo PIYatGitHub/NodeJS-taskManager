@@ -134,3 +134,7 @@ test('Should fail @ deleting the profile without auth', async()=>{
     .send()
     .expect(401)
 });
+
+test('Should succeed @ upload avatar image', async()=>{
+
+});
