@@ -22,48 +22,75 @@ beforeEach(async ()=>{
 });
 
 test('Should signup a new user', async()=>{
-    await request(app).post('/users').send(
-      {
+    await request(app).post('/users')
+      .send({
         name:"Petar Yonkov",
         email:"10vpetyryonkov@gmail.com",
         password:"SerbiaStrong"
-      }
-    ).expect(201)
+      })
+      .expect(201)
 });
 
 test('Should fail @ signup without email', async()=>{
-  await request(app).post('/users').send(
-    {
+  await request(app).post('/users')
+    .send({
       name:"Petar Yonkov",
       password:"SerbiaStrong"
     }
-  ).expect(400)
+  )
+    .expect(400)
 });
 
 test('Should fail @ signup without password', async()=>{
-  await request(app).post('/users').send(
-    {
+  await request(app).post('/users')
+    .send({
       name:"Petar Yonkov",
       email:"10vpetyryonkov@gmail.com"
     }
-  ).expect(400)
+  )
+    .expect(400)
+});
+
+test('Should fail @ signup with a very high age (above 130)', async()=>{
+  await request(app).post('/users')
+    .send({
+        name:"Petar Yonkov",
+        email:"10vpetyryonkov@gmail.com",
+        password:"SerbiaStrong",
+        age:255
+      }
+    )
+    .expect(400)
+});
+
+test('Should fail @ signup with a very low age (below 13)', async()=>{
+  await request(app).post('/users')
+    .send({
+        name:"Petar Yonkov",
+        email:"10vpetyryonkov@gmail.com",
+        password:"SerbiaStrong",
+        age:8
+      }
+    )
+    .expect(400)
 });
 
 test('Should login the existing test user', async()=>{
  await request(app)
    .post('/users/login')
    .send({
-   email: testUser_1.email,
-   password:testUser_1.password
- }).expect(200)
+     email: testUser_1.email,
+     password:testUser_1.password
+   })
+   .expect(200)
 });
 
 test('Should fail @ login of the existing test user with bad data', async()=>{
   await request(app)
     .post('/users/login')
     .send({
-    email: testUser_1.email,
-    password:testUser_1.password + 'nfguiqwyh3t78912'
+      email: testUser_1.email,
+      password:testUser_1.password + 'nfguiqwyh3t78912'
   }).expect(400)
 });
 
