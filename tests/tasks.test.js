@@ -16,5 +16,8 @@ test('Should succeed@ creating a task as a user with auth', async()=>{
     .send({
       description:'For the test!'
     })
-    .expect(201)
+    .expect(201);
+    const task = await Task.findById(response.body._id);
+    expect(task).not.toBeNull();
+    expect(task.complete).toEqual(false); 
 });
