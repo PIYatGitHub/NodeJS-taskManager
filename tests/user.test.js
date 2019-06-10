@@ -21,7 +21,7 @@ beforeEach(async ()=>{
   await new User(testUser_1).save();
 });
 
-test('Should signup a new user', async()=>{
+test('Should succeed@ signup for a valid new user', async()=>{
   const payload = {
     name: "PIY",
     email:"10v@test.com",
@@ -82,7 +82,7 @@ test('Should fail @ signup with a very low age (below 13)', async()=>{
     .expect(400)
 });
 
-test('Should login the existing test user', async()=>{
+test('Should succeed @ login fon an existing test user', async()=>{
  const response = await request(app)
    .post('/users/login')
    .send({
@@ -103,7 +103,7 @@ test('Should fail @ login of the existing test user with bad data', async()=>{
   }).expect(400)
 });
 
-test('Should get the profile with auth', async()=>{
+test('Should succeed @ geting the profile with auth', async()=>{
   await request(app)
     .get('/users/me')
     .set('Authorization', `Bearer ${testUser_1.tokens[0].token}`)
@@ -111,14 +111,14 @@ test('Should get the profile with auth', async()=>{
     .expect(200)
 });
 
-test('Should fail to get the profile without auth', async()=>{
+test('Should fail @ getting the profile without auth', async()=>{
   await request(app)
     .get('/users/me')
     .send()
     .expect(401)
 });
 
-test('Should delete the profile with auth', async()=>{
+test('Should succeed@ deleting the profile with auth', async()=>{
   await request(app)
     .delete('/users/me')
     .set('Authorization', `Bearer ${testUser_1.tokens[0].token}`)
@@ -126,10 +126,9 @@ test('Should delete the profile with auth', async()=>{
     .expect(200);
   const user = await User.findById(testUser_1_id);
   expect(user).toBeNull();
-
 });
 
-test('Should fail to delete the profile without auth', async()=>{
+test('Should fail @ deleting the profile without auth', async()=>{
   await request(app)
     .delete('/users/me')
     .send()
