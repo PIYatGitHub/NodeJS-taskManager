@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken'),
-      User = require('../models/user'),
-      utils = require('../utils/config');
+      User = require('../models/user');
 
 const validateUpdate = (updatesObj, allowedUpdates)=>{
    return Object.keys(updatesObj).every((update)=>allowedUpdates.includes(update));
@@ -9,7 +8,7 @@ const validateUpdate = (updatesObj, allowedUpdates)=>{
 const auth = async (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', ''),
-          decoded = jwt.verify(token, utils.secret),
+          decoded = jwt.verify(token, process.env.JWT_SECRET),
           user = await User.findOne({_id:decoded._id, 'tokens.token':token});
     if (!user) throw new Error();
     req.user = user;
