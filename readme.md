@@ -6,7 +6,7 @@ NodeJS Mastery</a> as supervised by Mr. Andrew J. Mead </em>
 This app supports full user auth
 
 ## Getting started for devs
-All the standard moves like ``npm install`` are highly recommended.
+Do not forget the standard moves like ``npm install`` as they will get you up and running.
 There is an environment config file, which is called ``dev.env``, which is not committed and
 holds some data needed for the app to run in development mode. This file is located in the ``config`` folder of the project, which is 
 <strong>located in the root of the project</strong>. The list of needed variables is: 
