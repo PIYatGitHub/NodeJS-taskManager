@@ -83,13 +83,15 @@ test('Should fail @ signup with a very low age (below 13)', async()=>{
 });
 
 test('Should login the existing test user', async()=>{
- await request(app)
+ const response = await request(app)
    .post('/users/login')
    .send({
      email: testUser_1.email,
      password:testUser_1.password
    })
-   .expect(200)
+   .expect(200);
+  const user = await User.findById(testUser_1_id);
+  expect(response.body.token).toBe(user.tokens[1].token);
 });
 
 test('Should fail @ login of the existing test user with bad data', async()=>{
@@ -121,7 +123,10 @@ test('Should delete the profile with auth', async()=>{
     .delete('/users/me')
     .set('Authorization', `Bearer ${testUser_1.tokens[0].token}`)
     .send()
-    .expect(200)
+    .expect(200);
+  const user = await User.findById(testUser_1_id);
+  expect(user).toBeNull();
+
 });
 
 test('Should fail to delete the profile without auth', async()=>{
