@@ -24,9 +24,9 @@ beforeEach(async ()=>{
 test('Should signup a new user', async()=>{
     await request(app).post('/users')
       .send({
-        name:"Petar Yonkov",
-        email:"10vpetyryonkov@gmail.com",
-        password:"SerbiaStrong"
+        name: "PIY",
+        email:"10v@test.com",
+        password:"whatever_pass_works!!"
       })
       .expect(201)
 });
@@ -34,8 +34,8 @@ test('Should signup a new user', async()=>{
 test('Should fail @ signup without email', async()=>{
   await request(app).post('/users')
     .send({
-      name:"Petar Yonkov",
-      password:"SerbiaStrong"
+      name:testUser_1.name,
+      password:testUser_1.password
     }
   )
     .expect(400)
@@ -44,8 +44,8 @@ test('Should fail @ signup without email', async()=>{
 test('Should fail @ signup without password', async()=>{
   await request(app).post('/users')
     .send({
-      name:"Petar Yonkov",
-      email:"10vpetyryonkov@gmail.com"
+      name:testUser_1.name,
+      email:testUser_1.email
     }
   )
     .expect(400)
@@ -54,10 +54,10 @@ test('Should fail @ signup without password', async()=>{
 test('Should fail @ signup with a very high age (above 130)', async()=>{
   await request(app).post('/users')
     .send({
-        name:"Petar Yonkov",
-        email:"10vpetyryonkov@gmail.com",
-        password:"SerbiaStrong",
-        age:255
+        name:testUser_1.name,
+        email:testUser_1.email,
+        password:testUser_1.password,
+        age:testUser_1.age + 150
       }
     )
     .expect(400)
@@ -66,10 +66,10 @@ test('Should fail @ signup with a very high age (above 130)', async()=>{
 test('Should fail @ signup with a very low age (below 13)', async()=>{
   await request(app).post('/users')
     .send({
-        name:"Petar Yonkov",
-        email:"10vpetyryonkov@gmail.com",
-        password:"SerbiaStrong",
-        age:8
+        name:testUser_1.name,
+        email:testUser_1.email,
+        password:testUser_1.password,
+        age:testUser_1.age-20
       }
     )
     .expect(400)
