@@ -157,3 +157,7 @@ test('Should fail @ upload avatar image for too large img', async()=>{
     .attach('profile_image', 'tests/fixtures/too_large.jpg')
     .expect(400)
 });
+//TODO
+// Should not update user if unauthenticated
+// Should not update user with invalid name/email/password
+// Should not delete user if unauthenticated
